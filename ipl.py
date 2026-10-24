@@ -17,19 +17,27 @@ def sell(number):
       if(teamsBudget[team]>=price):
         teamsBudget[team]-=price
         print(playername,"sold to",team,"for",price)
+        teamsPlayers[team].append(playername)
         break;
       else: 
         print(team , "doesn't have enough money")
     else:
       print("Invalid Team")
-
-
+def reset():
+  resetlist={"CSK":[],"MI":[],"RCB":[],"RR":[],"DC":[],"GT":[],"LSG":[],"SRH":[],"KKR":[],"PBKS":[]}
+  with open("players.json","w") as players:
+    json.dump(resetlist, players, indent=4)
+  exit()
+def savePlayers():
+  with open("players.json","w") as players:
+    json.dump(teamsPlayers, players, indent=4)
 def showbudget():
   for team, money in teamsBudget.items():
     print(team,": ",money,end="  ")
   print("\n")
-
+#reset();
 for i in range(2,501):
   print("Player number: ",i-1)
   sell(i)
   showbudget()
+  savePlayers()
