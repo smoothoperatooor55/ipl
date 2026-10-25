@@ -1,5 +1,6 @@
 import pandas
 import json
+import sys
 data = pandas.read_excel("list.xlsx")
 teamsBudget = {"CSK":12500,"MI":12500,"RCB":12500,"RR":12500,"DC":12500,"GT":12500,"LSG":12500,"SRH":12500,"KKR":12500,"PBKS":12500}
 with open("players.json","r") as players:
@@ -24,20 +25,28 @@ def sell(number):
     else:
       print("Invalid Team")
 def reset():
-  resetlist={"CSK":[],"MI":[],"RCB":[],"RR":[],"DC":[],"GT":[],"LSG":[],"SRH":[],"KKR":[],"PBKS":[]}
+  resetlist={"CSK":[],"MI":[],"RCB":[],"RR":[],"DC":[],"GT":[],"LSG":[],"SRH":[],"KKR":[],"PBKS":[],"index":2}
   with open("players.json","w") as players:
     json.dump(resetlist, players, indent=4)
   exit()
-def savePlayers():
+def savePlayers(i):
+  teamsPlayers["index"]=i;
   with open("players.json","w") as players:
     json.dump(teamsPlayers, players, indent=4)
 def showbudget():
   for team, money in teamsBudget.items():
     print(team,": ",money,end="  ")
   print("\n")
-#reset();
-for i in range(2,501):
+
+try:
+  if sys.argv[1]=="reset":
+    reset();
+except IndexError as err:
+  pass
+
+start = teamsPlayers["index"]+1
+for i in range(start,501):
   print("Player number: ",i-1)
   sell(i)
   showbudget()
-  savePlayers()
+  savePlayers(i)
